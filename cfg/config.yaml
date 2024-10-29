@@ -1,0 +1,13 @@
+nc: 2  # No. of classes
+filter: 1  # filter out 1 class
+train: coco/train2017  # directory path containing train images
+train_annotation: coco/annotations/instances_train2017.json  # coco annotation JSON file
+val: coco/val2017  # directory path containing val images
+val_annotation: coco/annotations/instances_val2017.json
+optimizer: SGD  # SGD | AdamW
+momentum: 0.9
+lr: !!float 1e-4
+decay: !!float 4e-5
+batch: 8
+workers: 6
+epoch: 40

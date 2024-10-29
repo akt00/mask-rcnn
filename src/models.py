@@ -9,7 +9,7 @@ from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 def get_mask_rcnn(num_classes, coco: bool = False) -> nn.Module:
     # load an instance segmentation model pre-trained on COCO
     model = torchvision.models.detection.maskrcnn_resnet50_fpn_v2(
-        weights=models.detection.MaskRCNN_ResNet50_FPN_V2_Weights
+        weights=models.detection.MaskRCNN_ResNet50_FPN_V2_Weights.DEFAULT
     )
 
     if coco:

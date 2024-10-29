@@ -21,12 +21,16 @@ class COCODataset(Dataset):
                 v2.ToImage(),
                 v2.ToDtype(dtype=float32, scale=True),
             ]
-        )
+        ),
+        filter: int | None = None
     ):
         super().__init__()
         self.path = image_path
         self.coco = COCO(annotation_path)
-        self.images = self.coco.getImgIds()
+        if filter is not None:
+            self.images = self.coco.getImgIds(catIds=filter)
+        else:
+            self.images = self.coco.getImgIds()
         # remove empty labels
         for idx in reversed(range(len(self.images))):
             ann_ids = self.coco.getAnnIds(imgIds=self.images[idx])
