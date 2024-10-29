@@ -5,8 +5,8 @@ import torch
 from torch.utils.data import DataLoader
 import yaml
 
-from src.engine import train_one_epoch, evaluate
 from src.dataset import COCODataset, collate_fn
+from src.engine import train_one_epoch, evaluate
 from src.models import get_mask_rcnn
 
 
@@ -16,7 +16,6 @@ def train(cfg: dict):
     train_dataset = COCODataset(
         image_path=Path(cfg["train"]),
         annotation_path=Path(cfg["train_annotation"]),
-        filter=cfg["filter"],
     )
 
     train_loader = DataLoader(
@@ -30,7 +29,6 @@ def train(cfg: dict):
     val_dataset = COCODataset(
         image_path=Path(cfg["val"]),
         annotation_path=Path(cfg["val_annotation"]),
-        filter=cfg["filter"],
     )
 
     val_loader = DataLoader(
@@ -59,8 +57,10 @@ def train(cfg: dict):
             weight_decay=cfg["decay"],
         )
 
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer=optim, mode="min", factor=0.5, patience=3, min_lr=1e-5,
+    scheduler = torch.optim.lr_scheduler.StepLR(
+        optimizer=optim,
+        step_size=cfg["step_size"],
+        gamma=cfg["gamma"],
     )
 
     epochs = cfg["epoch"]
@@ -72,7 +72,7 @@ def train(cfg: dict):
             data_loader=train_loader,
             device=device,
             epoch=e,
-            print_freq=1,
+            print_freq=100,
         )
 
         scheduler.step()

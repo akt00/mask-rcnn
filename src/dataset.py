@@ -22,15 +22,11 @@ class COCODataset(Dataset):
                 v2.ToDtype(dtype=float32, scale=True),
             ]
         ),
-        filter: int | None = None
     ):
         super().__init__()
         self.path = image_path
         self.coco = COCO(annotation_path)
-        if filter is not None:
-            self.images = self.coco.getImgIds(catIds=filter)
-        else:
-            self.images = self.coco.getImgIds()
+        self.images = self.coco.getImgIds()
         # remove empty labels
         for idx in reversed(range(len(self.images))):
             ann_ids = self.coco.getAnnIds(imgIds=self.images[idx])
@@ -67,7 +63,7 @@ class COCODataset(Dataset):
             "boxes": tv_tensors.BoundingBoxes(
                 bboxes, format="XYXY", canvas_size=(h, w)
             ),
-            "labels": tv_tensors.TVTensor(labels),
+            "labels": tv_tensors.TVTensor(labels).long(),
             "masks": tv_tensors.Mask(np.array(masks)),
         }
 

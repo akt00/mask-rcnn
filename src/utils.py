@@ -1,5 +1,5 @@
 """
-references: https://github.com/pytorch/vision/blob/main/references/detection/utils.py
+reference: https://github.com/pytorch/vision/blob/main/references/detection/utils.py
 """
 import datetime
 import errno

@@ -1,5 +1,5 @@
 """
-references: https://github.com/pytorch/vision/blob/main/references/detection/coco_eval.py
+reference: https://github.com/pytorch/vision/blob/main/references/detection/coco_eval.py
 """
 import copy
 import io

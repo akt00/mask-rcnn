@@ -1,5 +1,5 @@
 """
-references: https://github.com/pytorch/vision/blob/main/references/detection/engine.py
+reference: https://github.com/pytorch/vision/blob/main/references/detection/engine.py
 """
 import math
 import sys
@@ -38,7 +38,7 @@ def train_one_epoch(
             }
             for t in targets
         ]
-        with torch.cuda.amp.autocast(enabled=scaler is not None):
+        with torch.amp.autocast(device_type="cuda", enabled=scaler is not None):
             loss_dict = model(images, targets)
             losses = sum(loss for loss in loss_dict.values())
 
