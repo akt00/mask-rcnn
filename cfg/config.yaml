@@ -1,5 +1,5 @@
 nc: 91  # No. of classes
-coco: false  # use the default pre-trained head if true
+coco: True  # use the default pre-trained head if true
 train: coco/train2017  # dir path containing train images
 train_annotation: coco/annotations/instances_train2017.json  # coco annotation JSON file
 val: coco/val2017  # dir path containing val images

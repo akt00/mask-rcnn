@@ -92,7 +92,7 @@ def train(cfg: dict):
                     "model": model.state_dict(),
                     "optimizer": optim.state_dict(),
                 },
-                "best.pth",
+                Path("weights/best.pth"),
             )
 
     print("Done!")
