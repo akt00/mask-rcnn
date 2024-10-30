@@ -1,5 +1,4 @@
 from pathlib import Path
-import sys
 
 import torch
 from torch.utils.data import DataLoader
@@ -41,7 +40,7 @@ def train(cfg: dict):
         persistent_workers=False,
     )
 
-    model = get_mask_rcnn(num_classes=cfg["nc"], coco=True)
+    model = get_mask_rcnn(num_classes=cfg["nc"], coco=cfg["coco"])
     model.to(device=device)
 
     params = [p for p in model.parameters() if p.requires_grad]
@@ -65,6 +64,8 @@ def train(cfg: dict):
         gamma=cfg["gamma"],
     )
 
+    scaler = torch.GradScaler() if cfg["scaler"] else None
+
     epochs = cfg["epoch"]
     best_map = 0
 
@@ -76,6 +77,7 @@ def train(cfg: dict):
             device=device,
             epoch=e,
             print_freq=100,
+            scaler=scaler,
         )
 
         scheduler.step()
@@ -97,8 +99,9 @@ def train(cfg: dict):
 
 
 if __name__ == "__main__":
-    path = Path(sys.argv[-1]) if len(sys.argv) > 1 else Path("cfg/config.yaml")
-    with open("cfg/config.yaml") as fd:
+    path = Path("cfg/config.yaml")
+
+    with open(path) as fd:
         try:
             cfg = yaml.safe_load(fd)
         except yaml.YAMLError as e:

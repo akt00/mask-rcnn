@@ -7,8 +7,9 @@ All latest
 - Torchvision
 - pycocotools
 - PyYAML
-# How to train the custom model
+# How to train and evaluate the custom model
 ### 1. Prepare the custom dataset in MS COCO format
+or download the MS COCO dataset from [kaggle](https://www.kaggle.com/datasets/awsaf49/coco-2017-dataset)
 ```rb
 |
 |_dataset
@@ -25,10 +26,15 @@ All latest
 ```rb
 ./cfg/config.yaml
 ```
-### 3. Run the script
+### 3. Train the model
 The model with the best mAP@50:95 will be saved
 ```rb
 python3 train.py
+```
+### 4. Evaluate the model
+By default, it will save the visualizations of the model predictions on the validation dataset. Change the config if you only need the evaluation score.
+```rb
+python3 eval.py
 ```
 # TODO
 - Integration with an experiment tracker
