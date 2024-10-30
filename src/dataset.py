@@ -52,12 +52,18 @@ class COCODataset(Dataset):
         labels = []
         bboxes = []
         masks = []
+        areas = []
+        iscrowd = []
 
         for ann in anns:
             x, y, w, h = ann["bbox"]
+            if w < 1. or h < 1:
+                continue
             bboxes.append([x, y, x + w, h + y])
             labels.append(ann["category_id"])
             masks.append(self.coco.annToMask(ann))
+            areas.append(ann["area"])
+            iscrowd.append(ann["iscrowd"])
 
         target = {
             "boxes": tv_tensors.BoundingBoxes(
@@ -65,6 +71,9 @@ class COCODataset(Dataset):
             ),
             "labels": tv_tensors.TVTensor(labels).long(),
             "masks": tv_tensors.Mask(np.array(masks)),
+            "area": tv_tensors.TVTensor(np.array(areas)),
+            "image_id": ann["image_id"],
+            "iscrowd": tv_tensors.TVTensor(np.array(iscrowd)),
         }
 
         return img, target

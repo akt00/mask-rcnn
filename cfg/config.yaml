@@ -1,14 +1,14 @@
 nc: 91  # No. of classes
-train: coco/train2017  # directory path containing train images
+train: coco/train2017  # dir path containing train images
 train_annotation: coco/annotations/instances_train2017.json  # coco annotation JSON file
-val: coco/val2017  # directory path containing val images
-val_annotation: coco/annotations/instances_val2017.json
+val: coco/val2017  # dir path containing val images
+val_annotation: coco/annotations/instances_val2017.json  # coco annotation JSON file
 optimizer: SGD  # SGD | AdamW
 momentum: 0.9
-lr: !!float 5e-4
-decay: !!float 4e-5
+lr: !!float 4e-4
+decay: !!float 4e-5  # weight decay
 batch: 4
-workers: 4
-epoch: 40
-step_size: 15  # stepLR interval
+workers: 6
+epoch: 39
+step_size: 9  # stepLR interval
 gamma: 0.5  # stepLR multiplicator

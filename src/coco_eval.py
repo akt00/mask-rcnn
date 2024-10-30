@@ -8,9 +8,10 @@ from contextlib import redirect_stdout
 import numpy as np
 import pycocotools.mask as mask_util
 import torch
-import src.utils as utils
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
+
+import src.utils as utils
 
 
 class CocoEvaluator:
@@ -58,9 +59,17 @@ class CocoEvaluator:
             coco_eval.accumulate()
 
     def summarize(self):
+        """ reutrns the computed metrics for IoU=0.50:0.95 """
+        metrics = {}
         for iou_type, coco_eval in self.coco_eval.items():
             print(f"IoU metric: {iou_type}")
             coco_eval.summarize()
+            scores = {
+                "pr": float(coco_eval.stats[0]),
+                "rc": float(coco_eval.stats[6])
+            }
+            metrics.update({str(iou_type): scores})
+        return metrics
 
     def prepare(self, predictions, iou_type):
         if iou_type == "bbox":

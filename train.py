@@ -24,6 +24,7 @@ def train(cfg: dict):
         shuffle=True,
         num_workers=cfg["workers"],
         collate_fn=collate_fn,
+        persistent_workers=False,
     )
 
     val_dataset = COCODataset(
@@ -34,12 +35,13 @@ def train(cfg: dict):
     val_loader = DataLoader(
         dataset=val_dataset,
         batch_size=cfg["batch"],
-        shuffle=True,
+        shuffle=False,
         num_workers=cfg["workers"],
         collate_fn=collate_fn,
+        persistent_workers=False,
     )
 
-    model = get_mask_rcnn(num_classes=cfg["nc"])
+    model = get_mask_rcnn(num_classes=cfg["nc"], coco=True)
     model.to(device=device)
 
     params = [p for p in model.parameters() if p.requires_grad]
@@ -64,6 +66,7 @@ def train(cfg: dict):
     )
 
     epochs = cfg["epoch"]
+    best_map = 0
 
     for e in range(epochs):
         train_one_epoch(
@@ -77,7 +80,18 @@ def train(cfg: dict):
 
         scheduler.step()
 
-        evaluate(model=model, data_loader=val_loader, device=device)
+        metrics = evaluate(model=model, data_loader=val_loader, device=device)
+        # IoU=0.50:0.95
+        if best_map < metrics["segm"]["pr"]:
+            best_map = metrics["segm"]["pr"]
+            torch.save(
+                {
+                    "epoch": e,
+                    "model": model.state_dict(),
+                    "optimizer": optim.state_dict(),
+                },
+                "best.pth",
+            )
 
     print("Done!")
 

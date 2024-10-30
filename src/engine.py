@@ -7,6 +7,7 @@ import time
 
 import torch
 import torchvision.models.detection.mask_rcnn
+
 import src.utils as utils
 from .coco_eval import CocoEvaluator
 from .coco_utils import get_coco_api_from_dataset
@@ -84,7 +85,7 @@ def _get_iou_types(model):
 
 
 @torch.inference_mode()
-def evaluate(model, data_loader, device):
+def evaluate(model, data_loader, device: torch.device) -> dict:
     n_threads = torch.get_num_threads()
     # FIXME remove this and make paste_masks_in_image run on the GPU
     torch.set_num_threads(1)
@@ -121,6 +122,6 @@ def evaluate(model, data_loader, device):
 
     # accumulate predictions from all images
     coco_evaluator.accumulate()
-    coco_evaluator.summarize()
+    metrics = coco_evaluator.summarize()
     torch.set_num_threads(n_threads)
-    return coco_evaluator
+    return metrics

@@ -1,3 +1,6 @@
+"""
+reference: https://github.com/pytorch/vision/blob/main/references/detection/transforms.py
+"""
 from typing import Dict, List, Optional, Tuple, Union
 
 import torch
