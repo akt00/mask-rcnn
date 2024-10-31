@@ -66,11 +66,7 @@ def visualize(cfg: dict):
     with torch.no_grad():
         for idx, (image, _) in enumerate(val_dataset):
             x = image.to(device=device)
-            preds = model(
-                [
-                    x,
-                ]
-            )
+            preds = model([x])
             pred = preds[0]
             # in-place
             postporc(pred=pred, conf_thr=cfg["conf_thr"], iou_thr=cfg["iou_thr"])

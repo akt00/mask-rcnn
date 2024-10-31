@@ -79,7 +79,7 @@ class COCODataset(Dataset):
         return img, target
 
 
-def collate_fn(batch):
+def collate_fn(batch: list) -> tuple[list, list]:
     images = [item[0] for item in batch]
     targets = [item[1] for item in batch]
     return images, targets

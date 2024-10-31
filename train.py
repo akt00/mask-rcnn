@@ -44,6 +44,7 @@ def train(cfg: dict):
     model.to(device=device)
 
     params = [p for p in model.parameters() if p.requires_grad]
+
     if cfg["optimizer"] == "SGD":
         optim = torch.optim.SGD(
             params=params,
