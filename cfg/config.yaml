@@ -1,5 +1,5 @@
 nc: 91  # No. of classes
-coco: True  # uses the default pre-trained head if true
+coco: false  # uses the default pre-trained head if true
 train: coco/train2017  # dir path containing train images
 train_annotation: coco/annotations/instances_train2017.json  # COCO train JSON file
 val: coco/val2017  # dir path containing val images
@@ -15,7 +15,7 @@ epoch: 39
 step_size: 9  # stepLR interval
 gamma: 0.5  # stepLR multiplicator
 # eval config
-visualize: True  # saves the prediction results instead of computing scores
+visualize: true  # saves the prediction results instead of computing scores
 weight: weights/best.pth  # model weight
 conf_thr: 0.5  # confidence score threshold
 iou_thr: 0.5  # IoU score threshold
