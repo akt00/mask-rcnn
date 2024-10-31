@@ -6,7 +6,7 @@ All latest
 - Torchvision
 - pycocotools
 - PyYAML
-# How to train and evaluate the custom model
+# How to train and evaluate custom Mask R-CNN
 ### 1. Prepare the custom dataset in MS COCO format
 Or download the MS COCO dataset from [kaggle](https://www.kaggle.com/datasets/awsaf49/coco-2017-dataset).
 ```rb
