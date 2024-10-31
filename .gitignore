@@ -1,7 +1,7 @@
+*temp*.*
 coco/
 results/
 weights/*.pth
-*temp*.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

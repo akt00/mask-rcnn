@@ -1,9 +1,9 @@
 nc: 91  # No. of classes
-coco: True  # use the default pre-trained head if true
+coco: True  # uses the default pre-trained head if true
 train: coco/train2017  # dir path containing train images
-train_annotation: coco/annotations/instances_train2017.json  # coco annotation JSON file
+train_annotation: coco/annotations/instances_train2017.json  # COCO train JSON file
 val: coco/val2017  # dir path containing val images
-val_annotation: coco/annotations/instances_val2017.json  # coco annotation JSON file
+val_annotation: coco/annotations/instances_val2017.json  # COCO validation JSON file
 optimizer: SGD  # SGD | AdamW
 momentum: 0.9
 lr: !!float 4e-4
@@ -15,8 +15,8 @@ epoch: 39
 step_size: 9  # stepLR interval
 gamma: 0.5  # stepLR multiplicator
 # eval config
-visualize: True  # save the prediction results instead of computing scores
+visualize: True  # saves the prediction results instead of computing scores
 weight: weights/best.pth  # model weight
 conf_thr: 0.5  # confidence score threshold
-iou_thr: 0.5  # iou score threshold
+iou_thr: 0.5  # IoU score threshold
 mask_thr: 0.7  # segmentation mask threshold

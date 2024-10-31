@@ -1,6 +1,5 @@
 # Mask R-CNN
-Instance segmentation model based on [maskrcnn_resnet50_fpn_v2](https://pytorch.org/vision/main/models/mask_rcnn.html)
-
+Instance segmentation model based on [maskrcnn_resnet50_fpn_v2](https://pytorch.org/vision/main/models/mask_rcnn.html).
 # Depndencies
 All latest
 - PyTorch
@@ -9,7 +8,7 @@ All latest
 - PyYAML
 # How to train and evaluate the custom model
 ### 1. Prepare the custom dataset in MS COCO format
-or download the MS COCO dataset from [kaggle](https://www.kaggle.com/datasets/awsaf49/coco-2017-dataset)
+Or download the MS COCO dataset from [kaggle](https://www.kaggle.com/datasets/awsaf49/coco-2017-dataset).
 ```rb
 |
 |_dataset
@@ -27,7 +26,7 @@ or download the MS COCO dataset from [kaggle](https://www.kaggle.com/datasets/aw
 ./cfg/config.yaml
 ```
 ### 3. Train the model
-The model with the best mAP@50:95 will be saved
+The model with the best mAP@50:95 will be saved.
 ```rb
 python3 train.py
 ```
@@ -37,5 +36,5 @@ By default, it will save the visualizations of the model predictions on the vali
 python3 eval.py
 ```
 # TODO
-- Integration with an experiment tracker
+- Integration with experiment trackers
 - Support for online data augmentation
