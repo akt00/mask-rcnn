@@ -23,7 +23,7 @@ def train(cfg: dict):
         shuffle=True,
         num_workers=cfg["workers"],
         collate_fn=collate_fn,
-        persistent_workers=False,
+        persistent_workers=cfg["persistent"],
     )
 
     val_dataset = COCODataset(
@@ -37,7 +37,7 @@ def train(cfg: dict):
         shuffle=False,
         num_workers=cfg["workers"],
         collate_fn=collate_fn,
-        persistent_workers=False,
+        persistent_workers=cfg["persistent"],
     )
 
     model = get_mask_rcnn(num_classes=cfg["nc"], coco=cfg["coco"])
@@ -46,23 +46,29 @@ def train(cfg: dict):
     params = [p for p in model.parameters() if p.requires_grad]
 
     if cfg["optimizer"] == "SGD":
+        sgd_cfg = cfg["sgd"]
         optim = torch.optim.SGD(
             params=params,
             lr=cfg["lr"],
-            momentum=cfg["momentum"],
-            weight_decay=cfg["decay"],
+            momentum=sgd_cfg["momentum"],
+            weight_decay=sgd_cfg["decay"],
+            nesterov=sgd_cfg["nesterov"],
         )
-    else:
+    elif cfg["optimizer"] == "AdamW":
+        adamw_cfg = cfg["adamw"]
         optim = torch.optim.AdamW(
             params=params,
             lr=cfg["lr"],
-            weight_decay=cfg["decay"],
+            betas=adamw_cfg["betas"],
+            weight_decay=adamw_cfg["decay"],
         )
+    else:
+        NotImplementedError(f"Unsupported optimizer: {cfg['optimizer']}")
 
-    scheduler = torch.optim.lr_scheduler.StepLR(
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer=optim,
-        step_size=cfg["step_size"],
-        gamma=cfg["gamma"],
+        T_max=cfg["epoch"],
+        eta_min=cfg["min_lr"],
     )
 
     scaler = torch.GradScaler() if cfg["scaler"] else None
@@ -71,6 +77,7 @@ def train(cfg: dict):
     best_map = 0
 
     for e in range(epochs):
+        # print(f"----- Epoch {e} ----- at LR: {scheduler.get_last_lr()[0]:.4f}")
         train_one_epoch(
             model=model,
             optimizer=optim,
