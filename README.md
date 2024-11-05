@@ -1,6 +1,6 @@
 # Mask R-CNN
 Instance segmentation model based on [maskrcnn_resnet50_fpn_v2](https://pytorch.org/vision/main/models/mask_rcnn.html).
-# Depndencies
+# Dependencies
 All latest
 - PyTorch
 - Torchvision
