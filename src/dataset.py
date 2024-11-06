@@ -1,12 +1,12 @@
 from pathlib import Path
 
 import numpy as np
-from PIL import Image
 from pycocotools.coco import COCO
 from torch import Tensor, float32
 from torch.utils.data import Dataset
 from torchvision import tv_tensors
 from torchvision.transforms import v2
+from torchvision.io import read_image, ImageReadMode
 
 
 class COCODataset(Dataset):
@@ -16,9 +16,8 @@ class COCODataset(Dataset):
         *,
         image_path: Path,
         annotation_path: Path,
-        preproc: v2.Compose = v2.Compose(
+        transform: v2.Compose = v2.Compose(
             [
-                v2.ToImage(),
                 v2.ToDtype(dtype=float32, scale=True),
             ]
         ),
@@ -33,7 +32,7 @@ class COCODataset(Dataset):
             if not ann_ids:
                 del self.images[idx]
 
-        self.preproc = preproc
+        self.transform = transform
 
     def __len__(self) -> int:
         return len(self.images)
@@ -43,8 +42,8 @@ class COCODataset(Dataset):
         img_id = self.images[index]
         img_path = self.coco.loadImgs(img_id)[0]
         h, w = img_path["height"], img_path["width"]
-        img = Image.open(self.path / img_path["file_name"])
-        img = self.preproc(img)
+        img = read_image(self.path / img_path["file_name"], ImageReadMode.RGB)
+        img = self.transform(img)
         # annotations
         ann_ids = self.coco.getAnnIds(imgIds=img_id, iscrowd=False)
         anns = self.coco.loadAnns(ann_ids)
@@ -57,7 +56,7 @@ class COCODataset(Dataset):
 
         for ann in anns:
             x, y, w, h = ann["bbox"]
-            if w < 1. or h < 1:
+            if w < 1.0 or h < 1.0:
                 continue
             bboxes.append([x, y, x + w, h + y])
             labels.append(ann["category_id"])

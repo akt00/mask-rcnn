@@ -11,10 +11,10 @@ batch: 4  # 4 is recommended for 12GB VRAM
 workers: 4
 persistent: true  # use process pool instead of recreating worker processes each iteration
 epoch: 30
-optimizer: AdamW  # SGD | AdamW
+optimizer: SGD # SGD | AdamW
 sgd:
   momentum: 0.9
-  decay: !!float 4e-5  # weight decay
+  decay: !!float 1e-4  # weight decay
   nesterov: true
 adamw:
   betas:
