@@ -5,8 +5,8 @@ from pycocotools.coco import COCO
 from torch import Tensor, float32
 from torch.utils.data import Dataset
 from torchvision import tv_tensors
-from torchvision.transforms import v2
 from torchvision.io import read_image, ImageReadMode
+from torchvision.transforms import v2
 
 
 class COCODataset(Dataset):
