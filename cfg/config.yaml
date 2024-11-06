@@ -7,7 +7,7 @@ val_annotation: coco/annotations/instances_val2017.json  # COCO validation JSON 
 lr: !!float 1e-4
 min_lr: !!float 1e-5  # minimum learning rate for CosineAnnealing LR
 scaler: true  # performs mixed-precision training if true
-batch: 8  # 4 is recommended for 12GB VRAM
+batch: 4  # 4 is recommended for 12GB VRAM
 workers: 4
 persistent: true  # use process pool instead of recreating worker processes each iteration
 epoch: 30
