@@ -45,20 +45,20 @@ def train(cfg: dict):
 
     params = [p for p in model.parameters() if p.requires_grad]
 
-    if cfg["optimizer"] == "SGD":
+    if cfg["optimizer"].lower() == "sgd":
         sgd_cfg = cfg["sgd"]
         optim = torch.optim.SGD(
             params=params,
-            lr=cfg["lr"],
+            lr=sgd_cfg["lr"],
             momentum=sgd_cfg["momentum"],
             weight_decay=sgd_cfg["decay"],
             nesterov=sgd_cfg["nesterov"],
         )
-    elif cfg["optimizer"] == "AdamW":
+    elif cfg["optimizer"].lower() == "adamw":
         adamw_cfg = cfg["adamw"]
         optim = torch.optim.AdamW(
             params=params,
-            lr=cfg["lr"],
+            lr=adamw_cfg["lr"],
             betas=adamw_cfg["betas"],
             weight_decay=adamw_cfg["decay"],
         )

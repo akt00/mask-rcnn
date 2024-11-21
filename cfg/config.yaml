@@ -4,23 +4,24 @@ train: coco/train2017  # dir path containing train images
 train_annotation: coco/annotations/instances_train2017.json  # COCO train JSON file
 val: coco/val2017  # dir path containing val images
 val_annotation: coco/annotations/instances_val2017.json  # COCO validation JSON file
-lr: !!float 1e-4
 min_lr: !!float 1e-5  # minimum learning rate for CosineAnnealing LR
 scaler: true  # performs mixed-precision training if true
 batch: 4  # 2 is recommended for 12GB VRAM
 workers: 4
 persistent: true  # use process pool instead of recreating worker processes each iteration
 epoch: 30
-optimizer: SGD # SGD | AdamW
+optimizer: sgd # SGD | AdamW
 sgd:
+  lr: !!float 1e-4
   momentum: 0.9
-  decay: !!float 1e-4  # weight decay
+  decay: !!float 4e-5  # weight decay
   nesterov: true
 adamw:
+  lr: !!float 1e-4
   betas:
     - 0.9  # beta 1
     - 0.95  # beta 2
-  decay: !!float 1e-1  # weight decay
+  decay: !!float 1e-2  # weight decay
 # eval config
 visualize: true  # saves the prediction results instead of computing scores
 weight: weights/best.pth  # model weight
